@@ -14,7 +14,7 @@ public interface RecipeService {
 
     void deleteRecipe(Long id);
 
-    //todo   //•	Преглед на всички рецепти (с търсене и филтриране)
+    //todo   getAllRecipes(with parameters and search)
     //Set<Recipe> getRecipesBy()
 
     RecipeResponse likeRecipe(Long id);
@@ -22,4 +22,6 @@ public interface RecipeService {
     RecipeResponse dislikeRecipe(Long id);
 
     RecipeResponse getAllCommentsFromRecipe(Long id);
+
+    //todo methods for favorite
 }
