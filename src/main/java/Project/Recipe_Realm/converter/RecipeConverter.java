@@ -14,7 +14,7 @@ public class RecipeConverter {
     private UserRepository userRepository;
     private RecipeRepository recipeRepository;
 
-    public Recipe toRecipe(RecipeRequest recipeRequest){
+    public Recipe toRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = new Recipe();
         recipe.setCategory(recipeRequest.getCategory());
         recipe.setDescription(recipeRequest.getDescription());
