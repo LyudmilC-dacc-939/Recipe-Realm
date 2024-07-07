@@ -5,13 +5,18 @@ import Project.Recipe_Realm.dto.UserRequest;
 import Project.Recipe_Realm.dto.UserResponse;
 import Project.Recipe_Realm.model.Recipe;
 import Project.Recipe_Realm.model.User;
+import Project.Recipe_Realm.repository.UserRepository;
 import Project.Recipe_Realm.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService {
+public abstract class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {

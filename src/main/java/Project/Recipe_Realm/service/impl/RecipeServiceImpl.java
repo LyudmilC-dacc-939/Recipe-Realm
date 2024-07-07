@@ -42,4 +42,6 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeResponse getAllCommentsFromRecipe(Long id) {
         return null;
     }
+
+    ////todo methods for favorite
 }
