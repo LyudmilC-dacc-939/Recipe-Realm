@@ -1,5 +1,6 @@
 package Project.Recipe_Realm.model;
 
+import Project.Recipe_Realm.enums.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -31,6 +32,9 @@ public class User {
     @URL
     private String profilePicture;
     private Instant createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,

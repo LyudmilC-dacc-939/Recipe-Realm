@@ -14,7 +14,6 @@ public class RecipeResponse {
     private String title;
     private String description;
     private String ingredients;
-    private String instructions;
     private String category;
     private Instant createdAt;
     private Long likes;

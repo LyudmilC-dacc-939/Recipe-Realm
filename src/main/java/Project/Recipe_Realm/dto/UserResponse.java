@@ -1,5 +1,6 @@
 package Project.Recipe_Realm.dto;
 
+import Project.Recipe_Realm.enums.Role;
 import Project.Recipe_Realm.model.Comment;
 import Project.Recipe_Realm.model.Recipe;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class UserResponse {
     private String eMail;
     private String profilePicture;
     private Instant createdAt;
+    private Role role;
     private Set<Recipe> recipes;
     private Set<Comment> comments;
     private Set<Recipe> favorites;

@@ -25,4 +25,6 @@ public interface UserService {
 
     Set<Recipe> getAllFavoriteRecipesForUser(Long id);
 
+    User getByEMail(String email);
+    
 }

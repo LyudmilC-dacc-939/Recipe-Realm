@@ -20,6 +20,5 @@ public class UserRequest {
     @Email
     private String eMail;
     @URL
-    @NotNull(message = "Profile picture link should be valid")
     private String profilePicture;
 }
