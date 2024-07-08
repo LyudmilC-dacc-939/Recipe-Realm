@@ -25,6 +25,10 @@ public interface UserService {
 
     Set<Recipe> getAllFavoriteRecipesForUser(Long id);
 
+    UserResponse addToFavorites(Long userId, Long recipeId);
+
+    UserResponse removeFromFavorites(Long userId, Long recipeId);
+
     User getByEMail(String email);
     
 }
