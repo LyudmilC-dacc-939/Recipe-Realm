@@ -11,7 +11,6 @@ import Project.Recipe_Realm.model.User;
 import Project.Recipe_Realm.repository.RecipeRepository;
 import Project.Recipe_Realm.repository.UserRepository;
 import Project.Recipe_Realm.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@Slf4j
 public abstract class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;

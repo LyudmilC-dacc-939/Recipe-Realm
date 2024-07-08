@@ -27,7 +27,6 @@ public class Recipe {
     private String title;
     private String description;
     private String ingredients;
-    private String instructions;
     private String category;
     private Instant createdAt;
     private Long likes;
@@ -47,4 +46,7 @@ public class Recipe {
     @ManyToMany(mappedBy = "favorites", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("favorites")
     private Set<User> users = new HashSet<>();
+
+    private Set<Long> usersIdLiked;
+    private Set<Long> usersIdDisliked;
 }
