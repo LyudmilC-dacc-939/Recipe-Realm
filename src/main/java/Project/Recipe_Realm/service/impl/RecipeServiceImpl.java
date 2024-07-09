@@ -15,6 +15,7 @@ import Project.Recipe_Realm.service.RecipeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe updateRecipe(RecipeUpdateRequest updateRequest, Long id) {
+    public RecipeResponse updateRecipe(RecipeUpdateRequest updateRequest, Long id) {
         Recipe existingRecipe = recipeRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("Recipe with id %s not exist", id)));
         existingRecipe.setTitle(updateRequest.getTitle());
@@ -70,8 +71,11 @@ public class RecipeServiceImpl implements RecipeService {
         existingRecipe.setIngredients(updateRequest.getIngredients());
         existingRecipe.setCategory(updateRequest.getCategory());
         recipeRepository.save(existingRecipe);
+
+        RecipeResponse recipeResponse = new RecipeResponse();
+        BeanUtils.copyProperties(existingRecipe, recipeResponse);
         System.out.println(HttpStatus.ACCEPTED);
-        return existingRecipe;
+        return recipeResponse;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public RecipeResponse likeRecipe(Long recipeId, Long userId) {
+    public RecipeCommentsResponse likeRecipe(Long recipeId, Long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new RecordNotFoundException(String.format("User with id %s not exist", userId)));
         Recipe existingRecipe = recipeRepository.findById(recipeId).orElseThrow(() ->
@@ -95,14 +99,14 @@ public class RecipeServiceImpl implements RecipeService {
         existingRecipe.setLikes(existingRecipe.getLikes() + 1);
         recipeRepository.save(existingRecipe);
 
-        RecipeResponse recipeResponse = new RecipeResponse();
+        RecipeCommentsResponse recipeResponse = new RecipeCommentsResponse();
         BeanUtils.copyProperties(existingRecipe, recipeResponse);
         System.out.println(recipeResponse);
         return recipeResponse;
     }
 
     @Override
-    public RecipeResponse dislikeRecipe(Long recipeId, Long userId) {
+    public RecipeCommentsResponse dislikeRecipe(Long recipeId, Long userId) {
         userRepository.findById(userId).orElseThrow(() ->
                 new RecordNotFoundException(String.format("User with id %s not exist", userId)));
         Recipe existingRecipe = recipeRepository.findById(recipeId).orElseThrow(() ->
@@ -115,7 +119,7 @@ public class RecipeServiceImpl implements RecipeService {
         existingRecipe.setDislikes(existingRecipe.getDislikes() + 1);
         recipeRepository.save(existingRecipe);
 
-        RecipeResponse recipeResponse = new RecipeResponse();
+        RecipeCommentsResponse recipeResponse = new RecipeCommentsResponse();
         BeanUtils.copyProperties(existingRecipe, recipeResponse);
         System.out.println(recipeResponse);
         return recipeResponse;

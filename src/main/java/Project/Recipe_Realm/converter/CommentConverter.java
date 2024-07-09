@@ -14,6 +14,11 @@ public class CommentConverter {
     private UserRepository userRepository;
     private RecipeRepository recipeRepository;
 
+    public CommentConverter(UserRepository userRepository, RecipeRepository recipeRepository) {
+        this.userRepository = userRepository;
+        this.recipeRepository = recipeRepository;
+    }
+
     public Comment toComment(CommentRequest commentRequest) {
         Comment comment = new Comment();
         comment.setCreatedAt(Instant.now());

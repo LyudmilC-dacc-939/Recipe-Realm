@@ -12,7 +12,10 @@ import java.time.Instant;
 public class RecipeConverter {
 
     private UserRepository userRepository;
-    private RecipeRepository recipeRepository;
+
+    public RecipeConverter(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Recipe toRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = new Recipe();
