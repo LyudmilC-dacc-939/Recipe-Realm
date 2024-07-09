@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     public Set<Comment> getAllCommentsForRecipe(Long id) {
         Recipe currentRecipe = recipeRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("Recipe with ID: %s not exist", id)));
-        System.out.println(HttpStatus.OK);
+        System.out.println(HttpStatus.FOUND);
         return currentRecipe.getComments();
     }
 
