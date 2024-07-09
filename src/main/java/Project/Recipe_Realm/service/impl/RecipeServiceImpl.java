@@ -2,6 +2,7 @@ package Project.Recipe_Realm.service.impl;
 
 import Project.Recipe_Realm.advice.exception.RecordNotFoundException;
 import Project.Recipe_Realm.converter.RecipeConverter;
+import Project.Recipe_Realm.dto.RecipeCommentsResponse;
 import Project.Recipe_Realm.dto.RecipeRequest;
 import Project.Recipe_Realm.dto.RecipeResponse;
 import Project.Recipe_Realm.dto.RecipeUpdateRequest;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -121,11 +123,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Set<Comment> getAllCommentsFromRecipe(Long id) {
+    public RecipeCommentsResponse getAllCommentsFromRecipe(Long id) {
         Recipe currentRecipe = recipeRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("Recipe with ID: %s not exist", id)));
         System.out.println(HttpStatus.OK);
-        return currentRecipe.getComments();
+        RecipeCommentsResponse commentsResponse = new RecipeCommentsResponse();
+        BeanUtils.copyProperties(currentRecipe, commentsResponse);
+        return commentsResponse;
     }
 
     @Override
@@ -136,5 +140,8 @@ public class RecipeServiceImpl implements RecipeService {
         return currentRecipe.getUsers();
     }
 
-
+    @Override
+    public List<Recipe> findRecipeBy(String title, String description, String category) {
+        return recipeRepository.findByTitleOrDescriptionOrCategory(title, description, category);
+    }
 }
