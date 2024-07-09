@@ -17,13 +17,13 @@ public interface RecipeService {
 
     RecipeResponse getRecipe(Long id);
 
-    Recipe updateRecipe(RecipeUpdateRequest recipeUpdateRequest, Long id);
+    RecipeResponse updateRecipe(RecipeUpdateRequest recipeUpdateRequest, Long id);
 
     void deleteRecipe(Long id);
 
-    RecipeResponse likeRecipe(Long recipeId, Long userId);
+    RecipeCommentsResponse likeRecipe(Long recipeId, Long userId);
 
-    RecipeResponse dislikeRecipe(Long recipeId, Long userId);
+    RecipeCommentsResponse dislikeRecipe(Long recipeId, Long userId);
 
     RecipeCommentsResponse getAllCommentsFromRecipe(Long id);
 

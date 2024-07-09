@@ -1,2 +1,2 @@
 # Recipe-Realm
-Project using spring framework
+Project using Spring boot with Maven
