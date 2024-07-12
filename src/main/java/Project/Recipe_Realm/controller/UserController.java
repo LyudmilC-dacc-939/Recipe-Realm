@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -51,18 +52,21 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(userRequest, id), HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR')")
     @PatchMapping(path = "/add-to-favorites")
     public ResponseEntity<UserResponse> addToFavorites(@RequestParam("userId") Long userId,
                                                        @RequestParam("recipeId") Long recipeId) {
         return new ResponseEntity<>(userService.addToFavorites(userId, recipeId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER','MODERATOR')")
     @PatchMapping(path = "/remove-from-favorites")
     public ResponseEntity<UserResponse> removeFromFavorites(@RequestParam("userId") Long userId,
                                                             @RequestParam("recipeId") Long recipeId) {
         return new ResponseEntity<>(userService.removeFromFavorites(userId, recipeId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);

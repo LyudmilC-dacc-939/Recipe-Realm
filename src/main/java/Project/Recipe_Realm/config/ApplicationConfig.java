@@ -25,9 +25,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFoundException("Customer with such email does not exists, or wrong password used."));
-
-
+        return username -> userRepository.findByUsername(username).orElseThrow(() ->
+                new RecordNotFoundException("Customer with such email does not exists, or wrong password used."));
     }
 
     @Bean

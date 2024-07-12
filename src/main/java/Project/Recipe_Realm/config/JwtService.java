@@ -1,5 +1,6 @@
 package Project.Recipe_Realm.config;
 
+import Project.Recipe_Realm.helper.Constant;
 import Project.Recipe_Realm.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +9,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
@@ -19,8 +19,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${secret-key}")
-    private String SECRET_KEY;
+    //    @Value("${secret-key}")
+    //    private String SECRET_KEY;
+
+    private String SECRET_KEY = Constant.SECRET_KEY;
 
     protected String extractUserName(String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
@@ -62,8 +64,8 @@ public class JwtService {
 
     public boolean isValid(String jwt, UserDetails userDetails) {
         final String username = extractClaim(jwt, Claims::getSubject);
-        final String email = userDetails.getUsername();
-        return (username.equals(email)) && !isTokenExpired(jwt);
+        final String currentUserUsername = userDetails.getUsername();
+        return (username.equals(currentUserUsername)) && !isTokenExpired(jwt);
     }
 
     private boolean isTokenExpired(String jwt) {
