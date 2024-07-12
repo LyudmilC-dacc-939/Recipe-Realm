@@ -6,6 +6,7 @@ import Project.Recipe_Realm.model.Recipe;
 import Project.Recipe_Realm.model.User;
 import Project.Recipe_Realm.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1/user")
 public class UserController {
 
-    private UserService userService;
+   private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;

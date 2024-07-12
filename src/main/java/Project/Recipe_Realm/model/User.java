@@ -28,7 +28,7 @@ public class User {
     private String username;
     private String password;
     @Email
-    private String eMail;
+    private String email;
     @URL
     private String profilePicture;
     private Instant createdAt;

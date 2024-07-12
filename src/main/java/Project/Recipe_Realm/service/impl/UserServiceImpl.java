@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public abstract class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserConverter userConverter;
@@ -37,7 +37,7 @@ public abstract class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        if (userRepository.findByEMail(userRequest.getEMail()).isPresent()) {
+        if (userRepository.findByEmail(userRequest.getEMail()).isPresent()) {
             throw new RecordAlreadyExistsException("Email is taken!");
         }
         if (userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
@@ -74,12 +74,12 @@ public abstract class UserServiceImpl implements UserService {
     public User updateUser(UserRequest userRequest, Long id) {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("User with id %s not exist", id)));
-        Optional<User> alreadyTakenEmail = userRepository.findByEMail(userRequest.getEMail());
+        Optional<User> alreadyTakenEmail = userRepository.findByEmail(userRequest.getEMail());
         if (alreadyTakenEmail.isPresent()) {
             throw new RecordAlreadyExistsException(String.format("Email %s is already taken!", userRequest.getEMail()));
         }
         existingUser.setUsername(userRequest.getUsername());
-        existingUser.setEMail(userRequest.getEMail());
+        existingUser.setEmail(userRequest.getEMail());
         existingUser.setPassword(userRequest.getPassword());
         existingUser.setProfilePicture(userRequest.getProfilePicture());
 
@@ -134,4 +134,5 @@ public abstract class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(existingUser, userResponse);
         return userResponse;
     }
+
 }

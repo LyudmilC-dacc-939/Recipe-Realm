@@ -13,7 +13,7 @@ public class UserConverter {
     public User toUser(UserRequest userRequest) {
         User user = new User();
         user.setUsername(userRequest.getUsername());
-        user.setEMail(userRequest.getEMail());
+        user.setEmail(userRequest.getEMail());
         user.setPassword(userRequest.getPassword());
         user.setProfilePicture(userRequest.getProfilePicture());
         user.setCreatedAt(Instant.now());
