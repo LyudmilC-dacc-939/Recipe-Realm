@@ -1,6 +1,5 @@
 package Project.Recipe_Realm.service;
 
-import Project.Recipe_Realm.dto.LoginRequest;
 import Project.Recipe_Realm.dto.UserRequest;
 import Project.Recipe_Realm.dto.UserResponse;
 import Project.Recipe_Realm.model.Recipe;
@@ -12,8 +11,6 @@ import java.util.Set;
 public interface UserService {
 
     UserResponse createUser (UserRequest userRequest);
-
-    String login (LoginRequest loginRequest);
 
     UserResponse getUserById(Long id);
 

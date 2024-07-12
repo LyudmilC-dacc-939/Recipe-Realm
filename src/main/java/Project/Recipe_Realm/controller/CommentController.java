@@ -22,7 +22,6 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
     @PostMapping
     public ResponseEntity<CommentResponse> addComment(@Valid @RequestBody CommentRequest commentRequest) {
         return new ResponseEntity<>(commentService.addComment(commentRequest), HttpStatus.CREATED);
@@ -33,21 +32,18 @@ public class CommentController {
         return new ResponseEntity<>(commentService.getAllCommentsForRecipe(id), HttpStatus.FOUND);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
     @PutMapping(path = "/like")
     public ResponseEntity<CommentResponse> likeComment(@RequestParam("commentId") Long commentId,
                                                        @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(commentService.likeComment(commentId, userId), HttpStatus.ACCEPTED);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
     @PutMapping(path = "/dislike")
     public ResponseEntity<CommentResponse> dislikeComment(@RequestParam("commentId") Long commentId,
                                                           @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(commentService.dislikeComment(commentId, userId), HttpStatus.ACCEPTED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);
