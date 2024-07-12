@@ -1,5 +1,6 @@
 package Project.Recipe_Realm.controller;
 
+import Project.Recipe_Realm.dto.LoginRequest;
 import Project.Recipe_Realm.dto.UserRequest;
 import Project.Recipe_Realm.dto.UserResponse;
 import Project.Recipe_Realm.model.Recipe;
@@ -18,7 +19,7 @@ import java.util.Set;
 @RequestMapping("api/v1/user")
 public class UserController {
 
-   private UserService userService;
+    private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -28,8 +29,6 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
-
-    //todo: login mapping
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
@@ -68,5 +67,10 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping(path = "/auth")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+        return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
     }
 }
