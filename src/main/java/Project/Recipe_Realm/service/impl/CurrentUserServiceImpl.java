@@ -18,14 +18,14 @@ public class CurrentUserServiceImpl {
         if(principal instanceof UserDetails){
             return (User) principal;
         }else{
-            return userRepository.getByEmail(principal.toString());
+            return userRepository.getByUsername(principal.toString());
         }
     }
 
     public Boolean isCurrentUserRecipeOwner(User recipeOwner){
         User currentUser = extractCurrentUser();
         if(currentUser != null && recipeOwner != null){
-            return recipeOwner.getEmail().equals(extractCurrentUser().getEmail());
+            return recipeOwner.getUsername().equals(extractCurrentUser().getUsername());
         }
         return false;
     }

@@ -10,6 +10,7 @@ import Project.Recipe_Realm.service.RecipeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,19 +58,21 @@ public class RecipeController {
                                                        @PathVariable("id") Long id) {
         return new ResponseEntity<>(recipeService.updateRecipe(recipeUpdateRequest, id), HttpStatus.ACCEPTED);
     }
-
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
     @PutMapping(path = "/like")
     public ResponseEntity<RecipeCommentsResponse> likeRecipe(@RequestParam("recipeId") Long recipeId,
                                                              @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(recipeService.likeRecipe(recipeId, userId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
     @PutMapping(path = "/dislike")
     public ResponseEntity<RecipeCommentsResponse> dislikeRecipe(@RequestParam("recipeId") Long recipeId,
                                                                 @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(recipeService.dislikeRecipe(recipeId, userId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteRecipe(@PathVariable("id") Long id){
         recipeService.deleteRecipe(id);

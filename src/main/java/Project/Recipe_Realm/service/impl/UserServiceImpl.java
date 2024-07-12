@@ -2,6 +2,7 @@ package Project.Recipe_Realm.service.impl;
 
 import Project.Recipe_Realm.advice.exception.RecordAlreadyExistsException;
 import Project.Recipe_Realm.advice.exception.RecordNotFoundException;
+import Project.Recipe_Realm.config.JwtService;
 import Project.Recipe_Realm.converter.UserConverter;
 import Project.Recipe_Realm.dto.LoginRequest;
 import Project.Recipe_Realm.dto.UserRequest;
@@ -14,6 +15,8 @@ import Project.Recipe_Realm.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,14 +28,20 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private UserConverter userConverter;
     private RecipeRepository recipeRepository;
+    private AuthenticationManager authenticationManager;
+    private JwtService jwtService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserConverter userConverter,
-                           RecipeRepository recipeRepository) {
+                           RecipeRepository recipeRepository,
+                           AuthenticationManager authenticationManager,
+                           JwtService jwtService) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
         this.recipeRepository = recipeRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -56,7 +65,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(LoginRequest loginRequest) {
-        return null;
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(), loginRequest.getPassword()
+        ));
+
+        var user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow(() -> new RecordNotFoundException("User not found or wrong password"));
+        return jwtService.generateJwtToken(user);
     }
 
     @Override
