@@ -70,7 +70,6 @@ class CommentRepositoryTest {
 
         Comment existingComment = commentRepository.getReferenceById(user.getId());
         //Verify
-        System.out.println(existingComment);
         Assertions.assertNotNull(existingComment.getId());
     }
 
@@ -80,6 +79,6 @@ class CommentRepositoryTest {
     public void findById_returnsNull() {
 
         //Verify
-        Assert.isTrue(commentRepository.findById(2L).isEmpty(), "Yes it is");
+        Assert.state(commentRepository.findById(2L).isEmpty(), "Yes it is");
     }
 }

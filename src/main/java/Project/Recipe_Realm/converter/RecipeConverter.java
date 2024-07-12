@@ -2,7 +2,6 @@ package Project.Recipe_Realm.converter;
 
 import Project.Recipe_Realm.dto.RecipeRequest;
 import Project.Recipe_Realm.model.Recipe;
-import Project.Recipe_Realm.repository.RecipeRepository;
 import Project.Recipe_Realm.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
