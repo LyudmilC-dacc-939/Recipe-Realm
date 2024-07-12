@@ -1,0 +1,33 @@
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: debug
+                type: trace
+server:
+    port: 8080
+spring:
+    application:
+        name: Recipe-Realm
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/recipeRealm?createDatabaseIfNotExist=true
+        username: root
+        #password:
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+        show-sql: true
+springdoc:
+    swagger-ui:
+        config-url: /swagger-ui.html
+        enabled: true
+        path: /api-docs
+debug: false
+
+
+secret-key: 432A462D4A614E645267556B58703273357638792F423F4528472B4B62506553
