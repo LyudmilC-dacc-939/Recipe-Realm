@@ -2,8 +2,10 @@ package Project.Recipe_Realm.config;
 
 
 import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,14 +18,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final Filter jwtFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(Filter jwtFilter, AuthenticationProvider authenticationProvider) {
-        this.jwtFilter = jwtFilter;
-        this.authenticationProvider = authenticationProvider;
+    @Bean
+    static RoleHierarchyImpl roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_MODERATOR\n" +
+                "ROLE_MODERATOR > ROLE_USER");
+        return roleHierarchy;
     }
 
     @Bean
@@ -32,17 +38,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/api/v1/user",
-                                        "/api/v1/user/auth",
+                        authorize.requestMatchers("/api/v1/user/register",
+                                        "/api/v1/user/login",
                                         "/swagger-ui/*",
                                         "/api-docs/**",
                                         "/api-docs")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -18,11 +18,11 @@ public class UserConverter {
     public User toUser(UserRequest userRequest) {
         User user = new User();
         user.setUsername(userRequest.getUsername());
-        user.setEmail(userRequest.getEMail());
+        user.setEmail(userRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setProfilePicture(userRequest.getProfilePicture());
         user.setCreatedAt(Instant.now());
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         return user;
     }
 }

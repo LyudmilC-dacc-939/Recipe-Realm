@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.Instant;
 import java.util.Set;
 
-@Entity
+@Entity(name = "COMMENTS")
 @Table(name = "comments")
 @Getter
 @Setter
@@ -23,7 +23,8 @@ public class Comment {
     private Long likes;
     private Long dislikes;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;

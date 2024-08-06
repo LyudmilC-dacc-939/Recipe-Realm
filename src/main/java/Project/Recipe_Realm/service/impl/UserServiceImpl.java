@@ -12,6 +12,7 @@ import Project.Recipe_Realm.model.User;
 import Project.Recipe_Realm.repository.RecipeRepository;
 import Project.Recipe_Realm.repository.UserRepository;
 import Project.Recipe_Realm.service.UserService;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,30 +24,24 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserConverter userConverter;
+    @Autowired
     private RecipeRepository recipeRepository;
+    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
     private JwtService jwtService;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           UserConverter userConverter,
-                           RecipeRepository recipeRepository,
-                           AuthenticationManager authenticationManager,
-                           JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.userConverter = userConverter;
-        this.recipeRepository = recipeRepository;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-    }
 
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        if (userRepository.findByEmail(userRequest.getEMail()).isPresent()) {
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new RecordAlreadyExistsException("Email is taken!");
         }
         if (userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
@@ -89,12 +84,12 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserRequest userRequest, Long id) {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("User with id %s not exist", id)));
-        Optional<User> alreadyTakenEmail = userRepository.findByEmail(userRequest.getEMail());
+        Optional<User> alreadyTakenEmail = userRepository.findByEmail(userRequest.getEmail());
         if (alreadyTakenEmail.isPresent()) {
-            throw new RecordAlreadyExistsException(String.format("Email %s is already taken!", userRequest.getEMail()));
+            throw new RecordAlreadyExistsException(String.format("Email %s is already taken!", userRequest.getEmail()));
         }
         existingUser.setUsername(userRequest.getUsername());
-        existingUser.setEmail(userRequest.getEMail());
+        existingUser.setEmail(userRequest.getEmail());
         existingUser.setPassword(userRequest.getPassword());
         existingUser.setProfilePicture(userRequest.getProfilePicture());
 

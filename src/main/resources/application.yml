@@ -22,12 +22,13 @@ spring:
                 dialect: org.hibernate.dialect.MySQLDialect
                 format_sql: true
         show-sql: true
-springdoc:
-    swagger-ui:
-        config-url: /swagger-ui.html
-        enabled: true
+
+spring-doc:
+    api-docs:
         path: /api-docs
+
 debug: false
 
+secret-key: 3236464233324341314236393235454146313246353844464642353838
 
-secret-key: 432A462D4A614E645267556B58703273357638792F423F4528472B4B62506553
+#localhost:8080/swagger-ui/index.html

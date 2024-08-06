@@ -11,8 +11,8 @@ import java.time.Instant;
 @Component
 public class CommentConverter {
 
-    private UserRepository userRepository;
-    private RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
+    private final RecipeRepository recipeRepository;
 
     public CommentConverter(UserRepository userRepository, RecipeRepository recipeRepository) {
         this.userRepository = userRepository;

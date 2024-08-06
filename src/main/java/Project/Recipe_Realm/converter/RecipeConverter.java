@@ -11,7 +11,7 @@ import java.time.Instant;
 @Component
 public class RecipeConverter {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public RecipeConverter(UserRepository userRepository) {
         this.userRepository = userRepository;

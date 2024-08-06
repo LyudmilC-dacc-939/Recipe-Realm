@@ -16,38 +16,38 @@ import java.util.Set;
 @RequestMapping("api/v1/comment")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
 
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MODERATOR')")
     @PostMapping
     public ResponseEntity<CommentResponse> addComment(@Valid @RequestBody CommentRequest commentRequest) {
         return new ResponseEntity<>(commentService.addComment(commentRequest), HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/for-recipe/{id}")
+    @GetMapping(path = "/comments-for-recipe/{id}")
     public ResponseEntity<Set<Comment>> getAllCommentsForRecipe(@PathVariable("id") Long id) {
         return new ResponseEntity<>(commentService.getAllCommentsForRecipe(id), HttpStatus.FOUND);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MODERATOR')")
     @PutMapping(path = "/like")
     public ResponseEntity<CommentResponse> likeComment(@RequestParam("commentId") Long commentId,
                                                        @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(commentService.likeComment(commentId, userId), HttpStatus.ACCEPTED);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MODERATOR')")
     @PutMapping(path = "/dislike")
     public ResponseEntity<CommentResponse> dislikeComment(@RequestParam("commentId") Long commentId,
                                                           @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(commentService.dislikeComment(commentId, userId), HttpStatus.ACCEPTED);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);

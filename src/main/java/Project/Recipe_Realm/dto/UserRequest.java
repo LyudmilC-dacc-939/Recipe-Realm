@@ -2,6 +2,7 @@ package Project.Recipe_Realm.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,11 @@ public class UserRequest {
     private String password;
     @NotNull(message = "Email cannot be null")
     @Size(min = 9, max = 50, message = "Email must be at least 9 characters and at most 50 characters")
-    @Email
-    private String eMail;
-    @URL
+    @Pattern(regexp = "^[^\\W_]+\\w*(?:[.-]\\w*)*[^\\W_]+@[^\\W_]+(?:[.-]?\\w*[^\\W_]+)*(?:\\.[^\\W_]{2,})$",
+            //"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message = "Invalid Email Pattern")
+    @Email(message = "Invalid Email")
+    private String email;
+    @URL(regexp = "^(http|ftp).*")
     private String profilePicture;
 }

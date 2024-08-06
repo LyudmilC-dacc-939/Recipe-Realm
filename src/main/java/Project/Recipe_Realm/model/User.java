@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
+@Entity(name = "USERS")
 @Table(name = "users")
 @Getter
 @Setter
@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    @Column(unique = true)
     @Email
     private String email;
     @URL
@@ -48,6 +49,7 @@ public class User implements UserDetails {
     private Set<Recipe> recipes;
 
     @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
             mappedBy = "user")
     @JsonManagedReference
     private Comment comment;
@@ -64,6 +66,15 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

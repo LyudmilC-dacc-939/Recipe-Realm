@@ -1,14 +1,14 @@
 package Project.Recipe_Realm.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class LoginRequest {
-    @NonNull
+    @NotNull
     private String username;
-    @NonNull
+    @NotNull
     private String password;
 }

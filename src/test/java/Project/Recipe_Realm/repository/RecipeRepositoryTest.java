@@ -33,7 +33,7 @@ class RecipeRepositoryTest {
         user.setEmail("Chincho@abv.bg");
         user.setUsername("chinchoo00");
         user.setPassword("chinchoMishoka");
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         userRepository.save(user);
 
         Recipe recipe = new Recipe();
@@ -52,7 +52,7 @@ class RecipeRepositoryTest {
         user.setEmail("Chincho@abv.bg");
         user.setUsername("chinchoo00");
         user.setPassword("chinchoMishoka");
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         userRepository.save(user);
 
         Recipe recipe = new Recipe();
@@ -73,7 +73,7 @@ class RecipeRepositoryTest {
         user.setEmail("Chincho@abv.bg");
         user.setUsername("chinchoo00");
         user.setPassword("chinchoMishoka");
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
         userRepository.save(user);
 
         Recipe recipe = new Recipe();

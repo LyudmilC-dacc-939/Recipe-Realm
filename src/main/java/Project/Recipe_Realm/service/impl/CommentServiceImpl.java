@@ -20,21 +20,15 @@ import java.util.Set;
 @Service
 public class CommentServiceImpl implements CommentService {
 
+    @Autowired
     private CommentRepository commentRepository;
+    @Autowired
     private CommentConverter commentConverter;
+    @Autowired
     private RecipeRepository recipeRepository;
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository,
-                              CommentConverter commentConverter,
-                              RecipeRepository recipeRepository,
-                              UserRepository userRepository) {
-        this.commentRepository = commentRepository;
-        this.commentConverter = commentConverter;
-        this.recipeRepository = recipeRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public CommentResponse addComment(CommentRequest commentRequest) {

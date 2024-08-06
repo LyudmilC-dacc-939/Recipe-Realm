@@ -24,9 +24,9 @@ import java.util.Set;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-    private RecipeRepository recipeRepository;
-    private RecipeConverter recipeConverter;
-    private UserRepository userRepository;
+    private final RecipeRepository recipeRepository;
+    private final RecipeConverter recipeConverter;
+    private final UserRepository userRepository;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository,

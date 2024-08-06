@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "RECIPES")
 @Table(name = "recipes")
 @Getter
 @Setter

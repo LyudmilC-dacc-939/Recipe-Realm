@@ -41,7 +41,7 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService.getAllCommentsFromRecipe(id), HttpStatus.FOUND);
     }
 
-    @GetMapping(path = "/get-users-favorited/{id}")
+    @GetMapping(path = "/get-users-favorite/{id}")
     public ResponseEntity<Set<User>> getUsers(@PathVariable("id") Long id) {
         return new ResponseEntity<>(recipeService.getUsers(id), HttpStatus.FOUND);
     }
@@ -58,21 +58,21 @@ public class RecipeController {
                                                        @PathVariable("id") Long id) {
         return new ResponseEntity<>(recipeService.updateRecipe(recipeUpdateRequest, id), HttpStatus.ACCEPTED);
     }
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MODERATOR')")
     @PutMapping(path = "/like")
     public ResponseEntity<RecipeCommentsResponse> likeRecipe(@RequestParam("recipeId") Long recipeId,
                                                              @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(recipeService.likeRecipe(recipeId, userId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MODERATOR')")
     @PutMapping(path = "/dislike")
     public ResponseEntity<RecipeCommentsResponse> dislikeRecipe(@RequestParam("recipeId") Long recipeId,
                                                                 @RequestParam("userId") Long userId) {
         return new ResponseEntity<>(recipeService.dislikeRecipe(recipeId, userId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteRecipe(@PathVariable("id") Long id){
         recipeService.deleteRecipe(id);
