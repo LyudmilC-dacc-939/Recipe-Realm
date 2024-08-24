@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("api/v1/recipe")
+@RequestMapping("api/v1/recipes")
 public class RecipeController {
 
     private RecipeService recipeService;
@@ -47,9 +47,9 @@ public class RecipeController {
     }
 
     @GetMapping(path = "/find-by")
-    public ResponseEntity<List<Recipe>> findRecipeBy(@RequestParam("title") String title,
-                                                     @RequestParam("description") String description,
-                                                     @RequestParam("category") String category) {
+    public ResponseEntity<List<Recipe>> findRecipeBy(@RequestParam(value = "title", required = false) String title,
+                                                     @RequestParam(value = "description", required = false) String description,
+                                                     @RequestParam(value = "category", required = false) String category) {
         return new ResponseEntity<>(recipeService.findRecipeBy(title, description, category), HttpStatus.FOUND);
     }
 

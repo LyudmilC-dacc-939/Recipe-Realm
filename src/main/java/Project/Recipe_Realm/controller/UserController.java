@@ -6,18 +6,25 @@ import Project.Recipe_Realm.dto.UserResponse;
 import Project.Recipe_Realm.model.Recipe;
 import Project.Recipe_Realm.model.User;
 import Project.Recipe_Realm.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("api/v1/user")
+@EnableMethodSecurity
+@RequestMapping("api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -27,9 +34,23 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Registers new user", description = "Returns registered user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User successfully added",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "400", description = "Format is not valid",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "403", description = "Access denied due to Security Configuration",
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)))})
     @PostMapping(path = "/register")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userRequest));
     }
 
     @GetMapping(path = "/{id}")
