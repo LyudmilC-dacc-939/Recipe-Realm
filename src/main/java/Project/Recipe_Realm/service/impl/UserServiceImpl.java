@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private CurrentUserServiceImpl currentUserService;
 
 
     @Override
@@ -143,6 +145,11 @@ public class UserServiceImpl implements UserService {
         UserResponse userResponse = new UserResponse();
         BeanUtils.copyProperties(existingUser, userResponse);
         return userResponse;
+    }
+
+    @Override
+    public User findByEmail(String username) {
+        return null;
     }
 
 }

@@ -28,6 +28,8 @@ public class CommentServiceImpl implements CommentService {
     private RecipeRepository recipeRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CurrentUserServiceImpl currentUserService;
 
 
     @Override
@@ -51,8 +53,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Long id) {
-        commentRepository.findById(id).orElseThrow(() ->
+       Comment comment = commentRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("Comment with ID: %s not exist", id)));
+        boolean canDelete = currentUserService.isCurrentUserMatch(comment.getUser());
+        canDelete |= currentUserService.isCurrentUserARole("ROLE_MODERATOR");
+        if (!canDelete) {
+            throw new RecordNotFoundException("You cannot delete foreign comments");
+        }
         commentRepository.deleteById(id);
     }
 

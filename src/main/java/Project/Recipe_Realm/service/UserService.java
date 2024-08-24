@@ -28,5 +28,7 @@ public interface UserService {
     UserResponse addToFavorites(Long userId, Long recipeId);
 
     UserResponse removeFromFavorites(Long userId, Long recipeId);
+
+    User findByEmail(String username);
     
 }
