@@ -42,7 +42,7 @@ public class CurrentUserServiceImpl {
 
         if (authentication != null && authentication.isAuthenticated()) {
             for (GrantedAuthority authority : authentication.getAuthorities()) {
-                if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                if (authority.getAuthority().equals(role)) {
                     return true;
                 }
             }

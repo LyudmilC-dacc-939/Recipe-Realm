@@ -2,8 +2,10 @@ package Project.Recipe_Realm.advice;
 
 import Project.Recipe_Realm.advice.exception.RecordAlreadyExistsException;
 import Project.Recipe_Realm.advice.exception.RecordNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,5 +35,17 @@ public class GlobalExceptionHandler {
             errors.put(fieldName,message);
         });
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalAccessException.class)
+    public ResponseEntity<?> IllegalAccessException(IllegalAccessException illegalAccessException) {
+        return new ResponseEntity<>(illegalAccessException.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(HttpServletRequest request, AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body("\"Error\": \"Access Denied: You do not have the necessary permissions to access this resource.\"");
     }
 }
