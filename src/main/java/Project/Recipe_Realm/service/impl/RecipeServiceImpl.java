@@ -27,14 +27,17 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeConverter recipeConverter;
     private final UserRepository userRepository;
+    private final CurrentUserServiceImpl currentUserService;
 
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository,
                              RecipeConverter recipeConverter,
-                             UserRepository userRepository) {
+                             UserRepository userRepository,
+                             CurrentUserServiceImpl currentUserService) {
         this.recipeRepository = recipeRepository;
         this.recipeConverter = recipeConverter;
         this.userRepository = userRepository;
+        this.currentUserService = currentUserService;
     }
 
     @Override
@@ -82,6 +85,7 @@ public class RecipeServiceImpl implements RecipeService {
     public void deleteRecipe(Long id) {
         recipeRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("Invalid ID, Deletion aborted"));
+
         recipeRepository.deleteById(id);
     }
 

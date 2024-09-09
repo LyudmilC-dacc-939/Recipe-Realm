@@ -10,6 +10,7 @@ import Project.Recipe_Realm.repository.CommentRepository;
 import Project.Recipe_Realm.repository.RecipeRepository;
 import Project.Recipe_Realm.repository.UserRepository;
 import Project.Recipe_Realm.service.CommentService;
+import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,13 +53,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @SneakyThrows
     public void deleteComment(Long id) {
        Comment comment = commentRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("Comment with ID: %s not exist", id)));
         boolean canDelete = currentUserService.isCurrentUserMatch(comment.getUser());
         canDelete |= currentUserService.isCurrentUserARole("ROLE_MODERATOR");
         if (!canDelete) {
-            throw new RecordNotFoundException("You cannot delete foreign comments");
+            throw new IllegalAccessException("Current user is unauthorized to delete comments");
         }
         commentRepository.deleteById(id);
     }

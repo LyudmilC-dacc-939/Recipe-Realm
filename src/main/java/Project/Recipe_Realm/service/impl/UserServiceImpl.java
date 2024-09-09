@@ -13,6 +13,7 @@ import Project.Recipe_Realm.repository.RecipeRepository;
 import Project.Recipe_Realm.repository.UserRepository;
 import Project.Recipe_Realm.service.UserService;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,12 +84,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @SneakyThrows
     public User updateUser(UserRequest userRequest, Long id) {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException(String.format("User with id %s not exist", id)));
         Optional<User> alreadyTakenEmail = userRepository.findByEmail(userRequest.getEmail());
         if (alreadyTakenEmail.isPresent()) {
             throw new RecordAlreadyExistsException(String.format("Email %s is already taken!", userRequest.getEmail()));
+        }
+        if (!currentUserService.isCurrentUserMatch(existingUser)) {
+            throw new IllegalAccessException("Unauthorized Access!");
         }
         existingUser.setUsername(userRequest.getUsername());
         existingUser.setEmail(userRequest.getEmail());
