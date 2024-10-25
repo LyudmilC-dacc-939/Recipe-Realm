@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -58,8 +57,8 @@ public class UserController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "403", description = "Access denied due to Security Configuration",
-            content = @Content(mediaType = "application/json",
-            schema = @Schema(implementation = User.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = User.class)))})
@@ -78,12 +77,11 @@ public class UserController {
                             schema = @Schema(implementation = User.class)))
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id,
-                                                @AuthenticationPrincipal User currentUser) {
-        User extractCurrentUser = currentUserService.extractCurrentUser();
-        if (!extractCurrentUser.getId().equals(currentUser.getId()) || !currentUserService.isCurrentUserARole("ROLE_ADMIN")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and #id == #currentUser.id)")
+    // User, Moderator, and Admin roles can view their own profile; Admin can view any
+    public ResponseEntity<UserResponse> getUser(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal User currentUser) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.FOUND);
     }
 
@@ -128,8 +126,10 @@ public class UserController {
                             schema = @Schema(implementation = UserRequest.class)))
     })
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_USER') and #id == #currentUser.id)")
     public ResponseEntity<User> updateUser(@Valid @RequestBody UserRequest userRequest,
-                                           @PathVariable("id") Long id) {
+                                           @PathVariable("id") Long id,
+                                           @AuthenticationPrincipal User currentUser) {
         return new ResponseEntity<>(userService.updateUser(userRequest, id), HttpStatus.ACCEPTED);
     }
 
@@ -146,7 +146,7 @@ public class UserController {
     @PatchMapping(path = "/add-to-favorites")
     public ResponseEntity<UserResponse> addToFavorites(@RequestParam("userId") Long userId,
                                                        @RequestParam("recipeId") Long recipeId) {
-        if(currentUserService.isCurrentUserARole("ROLE_ADMIN")){
+        if (currentUserService.isCurrentUserARole("ROLE_ADMIN")) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userService.addToFavorites(userId, recipeId), HttpStatus.OK);
@@ -165,7 +165,7 @@ public class UserController {
     @PatchMapping(path = "/remove-from-favorites")
     public ResponseEntity<UserResponse> removeFromFavorites(@RequestParam("userId") Long userId,
                                                             @RequestParam("recipeId") Long recipeId) {
-        if(currentUserService.isCurrentUserARole("ROLE_ADMIN")){
+        if (currentUserService.isCurrentUserARole("ROLE_ADMIN")) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userService.removeFromFavorites(userId, recipeId), HttpStatus.OK);

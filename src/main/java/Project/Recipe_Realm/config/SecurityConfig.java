@@ -5,6 +5,7 @@ import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -25,11 +26,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    static RoleHierarchyImpl roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_MODERATOR\n" +
-                "ROLE_MODERATOR > ROLE_USER");
-        return roleHierarchy;
+    public RoleHierarchy roleHierarchy() {
+        return new CustomRoleHierarchyService(); //Custom
     }
 
     @Bean
